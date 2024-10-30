@@ -1,0 +1,3 @@
+[console_scripts]
+autonomous_rover_executable = rover_control.autonomous_rover_node:main
+

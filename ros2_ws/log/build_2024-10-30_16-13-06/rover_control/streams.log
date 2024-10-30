@@ -1,0 +1,38 @@
+[0.549s] Invoking command in '/home/moon_rockers_desk/moonrockers/ros2_ws/src/rover_control': PYTHONPATH=/home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/rover_control build --build-base /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build install --record /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/install.log --single-version-externally-managed install_data
+[0.756s] running egg_info
+[0.756s] creating ../../build/rover_control/rover_control.egg-info
+[0.756s] writing ../../build/rover_control/rover_control.egg-info/PKG-INFO
+[0.757s] writing dependency_links to ../../build/rover_control/rover_control.egg-info/dependency_links.txt
+[0.757s] writing entry points to ../../build/rover_control/rover_control.egg-info/entry_points.txt
+[0.757s] writing requirements to ../../build/rover_control/rover_control.egg-info/requires.txt
+[0.757s] writing top-level names to ../../build/rover_control/rover_control.egg-info/top_level.txt
+[0.758s] writing manifest file '../../build/rover_control/rover_control.egg-info/SOURCES.txt'
+[0.759s] reading manifest file '../../build/rover_control/rover_control.egg-info/SOURCES.txt'
+[0.759s] adding license file 'LICENSE'
+[0.760s] writing manifest file '../../build/rover_control/rover_control.egg-info/SOURCES.txt'
+[0.760s] running build
+[0.760s] running build_py
+[0.760s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build
+[0.760s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build/lib
+[0.760s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build/lib/rover_control
+[0.760s] copying rover_control/__init__.py -> /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build/lib/rover_control
+[0.761s] copying rover_control/autonomous_rover_control.py -> /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build/lib/rover_control
+[0.761s] running install
+[0.761s] running install_lib
+[0.762s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages/rover_control
+[0.762s] copying /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build/lib/rover_control/__init__.py -> /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages/rover_control
+[0.762s] copying /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build/lib/rover_control/autonomous_rover_control.py -> /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages/rover_control
+[0.762s] byte-compiling /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages/rover_control/__init__.py to __init__.cpython-310.pyc
+[0.762s] byte-compiling /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages/rover_control/autonomous_rover_control.py to autonomous_rover_control.cpython-310.pyc
+[0.763s] running install_data
+[0.763s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/share/ament_index
+[0.763s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/share/ament_index/resource_index
+[0.763s] creating /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/share/ament_index/resource_index/packages
+[0.763s] copying resource/rover_control -> /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/share/ament_index/resource_index/packages
+[0.763s] copying package.xml -> /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/share/rover_control
+[0.763s] running install_egg_info
+[0.765s] Copying ../../build/rover_control/rover_control.egg-info to /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages/rover_control-0.0.0-py3.10.egg-info
+[0.765s] running install_scripts
+[0.784s] Installing autonomous_rover_executable script to /home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/rover_control
+[0.784s] writing list of installed files to '/home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/install.log'
+[0.800s] Invoked command in '/home/moon_rockers_desk/moonrockers/ros2_ws/src/rover_control' returned '0': PYTHONPATH=/home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/moon_rockers_desk/moonrockers/ros2_ws/install/rover_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/rover_control build --build-base /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/build install --record /home/moon_rockers_desk/moonrockers/ros2_ws/build/rover_control/install.log --single-version-externally-managed install_data
