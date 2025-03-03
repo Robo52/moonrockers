@@ -14,11 +14,11 @@ class RoverPowerMonitor(Node):
         # Publisher for battery state
         self.battery_pub = self.create_publisher(BatteryState, '/battery_state', 10)
 
-        # Set up a timer callback to periodically check for new CAN messages.
+        # Set up a timer callback to check for new CAN messages.
         timer_period = 0.1  # seconds (10 Hz)
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
-        # Initialize the CAN bus (using SocketCAN on channel 'can0')
+        # Initialize CAN bus (using SocketCAN on channel 'can0')
         try:
             self.bus = can.interface.Bus(channel='can0', bustype='socketcan')
             self.get_logger().info("CAN bus initialized on channel 'can0'.")
@@ -26,7 +26,7 @@ class RoverPowerMonitor(Node):
             self.get_logger().error(f"Failed to initialize CAN bus: {e}")
             self.bus = None
 
-        # Define the CAN ID for PDH telemetry (this is a placeholder; adjust according to your PDH documentation)
+        # Define the CAN ID for PDH (this is a placeholder)
         self.PDH_CAN_ID = 0x200
 
     def timer_callback(self):
@@ -43,11 +43,10 @@ class RoverPowerMonitor(Node):
         if msg.arbitration_id == self.PDH_CAN_ID:
             # Parse the data.
             # (The exact format depends on REV’s PDH documentation.
-            # For illustration, assume the message data layout is:
+            #  Assume for now the message data layout is:
             #   - bytes 0-1: Battery Voltage in mV (unsigned short)
             #   - bytes 2-3: Battery Current in mA (signed short)
             #   - bytes 4: Battery temperature in °C (signed char)
-            # Adjust unpack format as needed.)
             try:
                 voltage_mV, current_mA, temp = struct.unpack('>HhB', msg.data[:5])
                 voltage = voltage_mV / 1000.0  # convert to volts
@@ -59,13 +58,13 @@ class RoverPowerMonitor(Node):
             # Create and populate the BatteryState message
             batt_msg = BatteryState()
             batt_msg.header.stamp = self.get_clock().now().to_msg()
-            batt_msg.header.frame_id = "battery_link"  # use a suitable frame id
+            batt_msg.header.frame_id = "battery_link"  # ros2 frame id
             batt_msg.voltage = voltage
             batt_msg.current = current
-            # Here we assume you have some battery design capacity in amp-hours:
+            # Capacity in amp-hours:
             batt_msg.charge = float('nan')
             batt_msg.capacity = float('nan')
-            # For percentage, you might calculate if you know the battery specs:
+            # For percentage
             batt_msg.percentage = float('nan')
             batt_msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
             batt_msg.power_supply_health = BatteryState.POWER_SUPPLY_HEALTH_GOOD
