@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: rover-perception
+Version: 0.0.0
+Summary: Hosts the RealSense driver node to publish rectified images, depth, and IMU data. Contains the AprilTag detection node that run on the camera data. Also includes a node to rotate the camera via the stepper motor (using the encoder feedback).
+Home-page: UNKNOWN
+Maintainer: John Miller
+Maintainer-email: john.miller@mines.sdsmt.edu
+License: TODO: License declaration
+Platform: UNKNOWN
+
+UNKNOWN
+

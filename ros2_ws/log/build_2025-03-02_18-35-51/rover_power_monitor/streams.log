@@ -1,0 +1,37 @@
+[0.545s] Invoking command in '/home/spherewalker/moonrockers/ros2_ws/src/rover_power_monitor': PYTHONPATH=/home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rover_power_monitor build --build-base /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build install --record /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/install.log --single-version-externally-managed install_data
+[0.693s] running egg_info
+[0.693s] creating ../../build/rover_power_monitor/rover_power_monitor.egg-info
+[0.693s] writing ../../build/rover_power_monitor/rover_power_monitor.egg-info/PKG-INFO
+[0.693s] writing dependency_links to ../../build/rover_power_monitor/rover_power_monitor.egg-info/dependency_links.txt
+[0.694s] writing entry points to ../../build/rover_power_monitor/rover_power_monitor.egg-info/entry_points.txt
+[0.694s] writing requirements to ../../build/rover_power_monitor/rover_power_monitor.egg-info/requires.txt
+[0.694s] writing top-level names to ../../build/rover_power_monitor/rover_power_monitor.egg-info/top_level.txt
+[0.694s] writing manifest file '../../build/rover_power_monitor/rover_power_monitor.egg-info/SOURCES.txt'
+[0.695s] reading manifest file '../../build/rover_power_monitor/rover_power_monitor.egg-info/SOURCES.txt'
+[0.695s] writing manifest file '../../build/rover_power_monitor/rover_power_monitor.egg-info/SOURCES.txt'
+[0.695s] running build
+[0.695s] running build_py
+[0.695s] creating /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build
+[0.695s] creating /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib
+[0.695s] creating /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor
+[0.695s] copying rover_power_monitor/rover_power_monitor_node.py -> /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor
+[0.696s] copying rover_power_monitor/__init__.py -> /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor
+[0.696s] running install
+[0.696s] running install_lib
+[0.697s] creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor
+[0.697s] copying /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor/rover_power_monitor_node.py -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor
+[0.697s] copying /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor/__init__.py -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor
+[0.697s] byte-compiling /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor/rover_power_monitor_node.py to rover_power_monitor_node.cpython-310.pyc
+[0.698s] byte-compiling /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor/__init__.py to __init__.cpython-310.pyc
+[0.698s] running install_data
+[0.698s] creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index
+[0.698s] creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index/resource_index
+[0.698s] creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index/resource_index/packages
+[0.698s] copying resource/rover_power_monitor -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index/resource_index/packages
+[0.698s] copying package.xml -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/rover_power_monitor
+[0.698s] running install_egg_info
+[0.699s] Copying ../../build/rover_power_monitor/rover_power_monitor.egg-info to /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor-0.0.0-py3.10.egg-info
+[0.700s] running install_scripts
+[0.713s] Installing rover_power_monitor_node script to /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/rover_power_monitor
+[0.714s] writing list of installed files to '/home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/install.log'
+[0.733s] Invoked command in '/home/spherewalker/moonrockers/ros2_ws/src/rover_power_monitor' returned '0': PYTHONPATH=/home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/rover_power_monitor build --build-base /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build install --record /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/install.log --single-version-externally-managed install_data

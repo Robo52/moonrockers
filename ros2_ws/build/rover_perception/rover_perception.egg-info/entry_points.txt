@@ -1,0 +1,3 @@
+[console_scripts]
+apriltag_pose_estimator = rover_perception.apriltag_pose_estimator:main
+

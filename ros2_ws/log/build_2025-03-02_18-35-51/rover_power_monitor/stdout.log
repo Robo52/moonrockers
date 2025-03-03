@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/rover_power_monitor/rover_power_monitor.egg-info
+writing ../../build/rover_power_monitor/rover_power_monitor.egg-info/PKG-INFO
+writing dependency_links to ../../build/rover_power_monitor/rover_power_monitor.egg-info/dependency_links.txt
+writing entry points to ../../build/rover_power_monitor/rover_power_monitor.egg-info/entry_points.txt
+writing requirements to ../../build/rover_power_monitor/rover_power_monitor.egg-info/requires.txt
+writing top-level names to ../../build/rover_power_monitor/rover_power_monitor.egg-info/top_level.txt
+writing manifest file '../../build/rover_power_monitor/rover_power_monitor.egg-info/SOURCES.txt'
+reading manifest file '../../build/rover_power_monitor/rover_power_monitor.egg-info/SOURCES.txt'
+writing manifest file '../../build/rover_power_monitor/rover_power_monitor.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build
+creating /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib
+creating /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor
+copying rover_power_monitor/rover_power_monitor_node.py -> /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor
+copying rover_power_monitor/__init__.py -> /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor
+running install
+running install_lib
+creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor
+copying /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor/rover_power_monitor_node.py -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor
+copying /home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/build/lib/rover_power_monitor/__init__.py -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor
+byte-compiling /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor/rover_power_monitor_node.py to rover_power_monitor_node.cpython-310.pyc
+byte-compiling /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index
+creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index/resource_index
+creating /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index/resource_index/packages
+copying resource/rover_power_monitor -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/ament_index/resource_index/packages
+copying package.xml -> /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/share/rover_power_monitor
+running install_egg_info
+Copying ../../build/rover_power_monitor/rover_power_monitor.egg-info to /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/python3.10/site-packages/rover_power_monitor-0.0.0-py3.10.egg-info
+running install_scripts
+Installing rover_power_monitor_node script to /home/spherewalker/moonrockers/ros2_ws/install/rover_power_monitor/lib/rover_power_monitor
+writing list of installed files to '/home/spherewalker/moonrockers/ros2_ws/build/rover_power_monitor/install.log'
