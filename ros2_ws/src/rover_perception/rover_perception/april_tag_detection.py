@@ -15,15 +15,15 @@ class AprilTagPoseEstimator(Node):
         self.get_logger().info("AprilTag Pose Estimator Node Starting...")
         self.bridge = CvBridge()
 
-        # Initialize camera intrinsics with default values;
+        # Initialize camera intrinsics with default D435i values;
         # These will be updated by the CameraInfo callback.
         self.fx = 615.0  # placeholder; update from /cam_1/color/camera_info
         self.fy = 615.0
         self.cx = 320.0
         self.cy = 240.0
 
-        # Set the physical tag size (meters) of the inner (data) square.
-        # Adjust this to your measured tag size (e.g., 0.15 m for a 15cm tag).
+        # Set the physical tag size (meters) of the inner (data/black) square.
+        # Adjust this to measured tag size
         self.tag_size = 0.15
 
         # Subscribe to CameraInfo to update intrinsics
@@ -37,7 +37,7 @@ class AprilTagPoseEstimator(Node):
         # Subscribe to the rectified image topic
         self.create_subscription(
             Image,
-            '/cam_1/color/image_rect',  # Ensure this is the topic publishing rectified images
+            '/cam_1/color/image_rect',  # Ensure this is the topic publishing rectified images may differ with Realsense Node
             self.image_callback,
             10
         )
@@ -45,7 +45,7 @@ class AprilTagPoseEstimator(Node):
         # Publisher for the detected tag's pose
         self.pose_pub = self.create_publisher(PoseStamped, '/apriltag_pose', 10)
 
-        # Configure the AprilTag detector to use tagStandard41h12
+        # Configure the AprilTag detector to use tagStandard41h12 family
         options = apriltag.DetectorOptions(families="tagStandard41h12", refine_edges=True)
         self.detector = apriltag.Detector(options)
 
@@ -71,7 +71,7 @@ class AprilTagPoseEstimator(Node):
             self.get_logger().debug("No AprilTags detected in this frame.")
             return
 
-        # For each detected tag, compute its pose relative to the camera.
+        # For detected tag, compute pose relative to the camera.
         for detection in detections:
             tag_id = detection.tag_id
             self.get_logger().info(f"Detected tag id: {tag_id}")
@@ -101,7 +101,7 @@ class AprilTagPoseEstimator(Node):
             dist_coeffs = np.zeros((4, 1), dtype=np.float32)
 
             # Solve for the rotation and translation vectors using solvePnP.
-            # Use cv2.SOLVEPNP_IPPE_SQUARE, which is well suited for square fiducials.
+            # Use cv2.SOLVEPNP_IPPE_SQUARE, good for square fiducials.
             success, rvec, tvec = cv2.solvePnP(
                 object_points,
                 image_points,
@@ -122,7 +122,7 @@ class AprilTagPoseEstimator(Node):
             # Create and populate the PoseStamped message.
             pose_msg = PoseStamped()
             pose_msg.header = msg.header
-            # Optionally, override the frame_id:
+            # We can override the frame_id:
             # pose_msg.header.frame_id = "camera_link"
             pose_msg.pose.position.x = float(tvec[0])
             pose_msg.pose.position.y = float(tvec[1])
