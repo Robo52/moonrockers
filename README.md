@@ -17,38 +17,38 @@ Real-time Monitoring: Live status updates and comprehensive logging
 System Architecture
 ROS2 Hybrid Architecture
 ┌─────────────────────────────────────────────────────────────┐
-│                       WEB INTERFACE                         │
-│  ┌─────────────┐ ┌─────────────────────────────────────────┐│
-│  │   Gamepad   │ │       Touch Controls & Monitoring       ││
-│  │   Support   │ │        (Joystick/Sliders/Status)        ││
-│  └─────────────┘ └─────────────────────────────────────────┘│
+│                    WEB INTERFACE                            │
+│  ┌─────────────┐  ┌─────────────────────────────────────────┐│
+│  │   Gamepad   │  │     Touch Controls & Monitoring         ││
+│  │  Support    │  │   (Joystick/Sliders/Status)             ││
+│  └─────────────┘  └─────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────┘
-                        WebSocket/HTTP
+                       │ WebSocket/HTTP
 ┌─────────────────────────────────────────────────────────────┐
-│                TELEOPERATION SERVER (FastAPI)               │
+│         TELEOPERATION SERVER (FastAPI)                     │
 └─────────────────────────────────────────────────────────────┘
-                         ROS2 Topics
+                       │ ROS2 Topics
 ┌─────────────────────────────────────────────────────────────┐
-│                   ROS2 COORDINATION LAYER                   │
+│                   ROS2 COORDINATION LAYER                  │
 │ ┌─────────────┐ ┌──────────────┐ ┌─────────────────────────┐│
-│ │   Vision    │ │  Navigation  │ │    Autonomous State     ││ 
-│ │    Node     │ │     Node     │ │         Machine         ││
+│ │  Vision     │ │ Navigation   │ │   Autonomous State      ││ 
+│ │   Node      │ │     Node     │ │      Machine            ││
 │ └─────────────┘ └──────────────┘ └─────────────────────────┘│
 │ ┌─────────────┐ ┌──────────────┐ ┌─────────────────────────┐│
-│ │ Localization│ │    Digging   │ │      Path Planner       ││
-│ │     Node    │ │   Behaviors  │ │    (A*, RRT, Avoid)     ││
+│ │Localization │ │   Mining     │ │    Path Planner         ││
+│ │    Node     │ │  Behaviors   │ │   (A*, RRT, Avoid)      ││
 │ └─────────────┘ └──────────────┘ └─────────────────────────┘│
 └─────────────────────────────────────────────────────────────┘
-                  Direct Hardware Interface
+                       │ Direct Hardware Interface
 ┌─────────────────────────────────────────────────────────────┐
-│               HARDWARE BRIDGE & CONTROLLERS                 │
+│              HARDWARE BRIDGE & CONTROLLERS                 │
 └─────────────────────────────────────────────────────────────┘
           │            │            │            │
-┌─────────────┐ ┌──────────────┐ ┌──────────────┐ ┌─────────────┐
-│    MOTORS   │ │    CAMERA    │ │    BUCKET    │ │    VISION   │
-│(CAN Control)│ │  (Stepper +  │ │  (Actuators) │ │ (RealSense) │
-│             │ │  RealSense)  │ │              │ │             │
-└─────────────┘ └──────────────┘ └──────────────┘ └─────────────┘
+┌─────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────┐
+│   MOTORS    │ │   CAMERA     │ │   BUCKET     │ │ VISION   │
+│(CAN Control)│ │  (Stepper +  │ │ (Actuators)  │ │ (RealSense)│
+│             │ │  RealSense)  │ │              │ │          │
+└─────────────┘ └──────────────┘ └──────────────┘ └──────────┘
 Hardware 
 
 Compute: Jetson Orin Nano
