@@ -1,6 +1,8 @@
+#!/usr/bin/evn python3
 """
-Stepper Motor Controller for Camera stepper
+Stepper Motor Controller for Camera Pan/Tilt
 Controls NEMA 17 stepper motor via GPIO for camera positioning
+John Miller
 """
 
 import time
@@ -11,16 +13,19 @@ from dataclasses import dataclass
 from enum import Enum
 import logging
 
-# GPIO library - supposed to work on Jetson Orin Nano
+# GPIO lib
 try:
     import Jetson.GPIO as GPIO
     GPIO_AVAILABLE = True
+    logger.info("Jetson.GPIO library loaded successfully")
 except ImportError:
     try:
         import RPi.GPIO as GPIO
         GPIO_AVAILABLE = True
+        logger.info("RPi.GPIO library loaded (compatibility mode)")
     except ImportError:
-        print("Warning: No GPIO library available - running in sim")
+        logger.error("No GPIO library available")
+        logger.error("Install with: sudo apt install python3-jetson-gpio")
         GPIO_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
@@ -59,7 +64,7 @@ class StepperMotorController:
         self.dir_pin = dir_pin
         self.enable_pin = enable_pin
         
-        # Motor params
+        # Motor parameters
         self.steps_per_rev = self.config['stepper_steps_per_rev'] * self.config['stepper_microsteps']
         self.degrees_per_step = 360.0 / self.steps_per_rev
         self.max_speed = self.config['camera_rotation_speed']  # degrees/second
@@ -77,7 +82,7 @@ class StepperMotorController:
         self.on_move_complete = None
         self.on_position_changed = None
         
-        # Initialize GPIO
+        # Init GPIO
         self.initialize_gpio()
         
         logger.info(f"Stepper controller initialized: {self.steps_per_rev} steps/rev, "
@@ -129,16 +134,17 @@ class StepperMotorController:
         else:
             GPIO.output(self.dir_pin, GPIO.LOW)
     
-    def step_once(self, pulse_width: float = 0.000002):  # microseconds
-        """Execute a single step pulse"""
+    def step_once(self, pulse_width: float = 0.000002):  # 2 microseconds
+        """Execute a single step pulse with precise timing"""
         if not GPIO_AVAILABLE:
-            time.sleep(pulse_width * 2)  # Sim timing
+            logger.error("Cannot execute step - GPIO not available")
             return
             
+        # Generate precise step pulse
         GPIO.output(self.step_pin, GPIO.HIGH)
         time.sleep(pulse_width)
         GPIO.output(self.step_pin, GPIO.LOW)
-        time.sleep(pulse_width)
+        time.sleep(pulse_width)  # Minimum low time
     
     def move_steps(self, steps: int, speed_degrees_per_sec: Optional[float] = None):
         """
@@ -156,18 +162,18 @@ class StepperMotorController:
             logger.warning("Motor already moving - stop current movement first")
             return False
         
-        # movement params
+        # move params
         direction = MotorDirection.CLOCKWISE if steps > 0 else MotorDirection.COUNTERCLOCKWISE
         abs_steps = abs(steps)
         
         if speed_degrees_per_sec is None:
             speed_degrees_per_sec = self.max_speed
             
-        # speed to steps per second
+        # Convert speed to steps per second
         steps_per_second = speed_degrees_per_sec / self.degrees_per_step
         step_delay = 1.0 / steps_per_second if steps_per_second > 0 else 0.001
         
-        # Check position limits
+        # Check pos limits
         new_position = self.current_position_steps + steps
         new_angle = new_position * self.degrees_per_step
         
@@ -193,7 +199,7 @@ class StepperMotorController:
         try:
             # Set direction
             self.set_direction(direction)
-            time.sleep(0.001)  # Small delay after direction change
+            time.sleep(0.001)  # delay after direction change
             
             # Execute steps
             for i in range(steps):
@@ -209,7 +215,7 @@ class StepperMotorController:
                 self.status.position_steps = self.current_position_steps
                 self.status.position_degrees = self.current_position_steps * self.degrees_per_step
                 
-                # Callback for position updates
+                # Callback for pos updates
                 if self.on_position_changed:
                     self.on_position_changed(self.status.position_degrees)
             
@@ -262,7 +268,7 @@ class StepperMotorController:
             while self.status.is_moving:
                 time.sleep(0.1)
             
-            # Set current position as home
+            # Set current pos as home
             self.current_position_steps = 0
             self.home_position_steps = 0
             self.status.position_steps = 0
@@ -328,7 +334,7 @@ class StepperMotorController:
         """Shutdown the stepper controller"""
         logger.info("Shutting down stepper motor controller")
         
-        # Stop move
+        # Stop any moves
         self.stop_movement()
         
         # Disable motor
@@ -344,20 +350,20 @@ class StepperMotorController:
                 logger.warning(f"GPIO cleanup warning: {e}")
 
 
-# Tests
+# Test
 if __name__ == "__main__":
     from config import CAMERA_CONFIG
     
     # Test config
     config = {'CAMERA_CONFIG': CAMERA_CONFIG}
     
-    # GPIO pin assignments (Will likely need to change on orin)
+    # GPIO pin assignments (will need to adjust for orin)
     STEP_PIN = 18  # Board pin 12
     DIR_PIN = 16   # Board pin 10  
-    ENABLE_PIN = 22  # Board pin 15 
+    ENABLE_PIN = 22  # Board pin 15
     
     try:
-        # Initialize controller
+        # Init controller
         stepper = StepperMotorController(config, STEP_PIN, DIR_PIN, ENABLE_PIN)
         stepper.enable_motor(True)
         
@@ -367,7 +373,7 @@ if __name__ == "__main__":
         stepper.home_motor()
         time.sleep(2)
         
-        # Test basic movements
+        # Test moves
         print("Moving to +45 degrees...")
         stepper.move_to_angle(45.0)
         time.sleep(3)
