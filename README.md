@@ -64,7 +64,7 @@ Voltage draw: 24V for motors, 12V for actuators, 5V for electronics
 Run automated setup (sudo)
 sudo bash setup_system.sh
 
-# Reboot to ensure all drivers are loaded
+Reboot to ensure all drivers are loaded
 sudo reboot
 
 2. Hardware Connections
@@ -90,13 +90,13 @@ Intel RealSense D435i → USB 3.0 port (blue connector)
 Option A: Complete ROS2 System
 cd ~/moonrockers
 
-# Full autonomous system
+Full autonomous system
 ros2 launch moonrockers rover_system.launch.py enable_autonomous:=true
 
-# Teleoperation only
+Teleoperation only
 ros2 launch moonrockers teleoperation.launch.py port:=8000
 
-# Custom configuration
+Custom configuration
 ros2 launch moonrockers rover_system.launch.py \
     enable_vision:=true \
     enable_navigation:=true \
@@ -107,7 +107,7 @@ Option B: Interactive Launcher
 Interactive menu system
 ./launch_rover.sh
 
-# Direct launch modes
+Direct launch modes
 ./launch_rover.sh autonomous    # Full autonomous run
 ./launch_rover.sh teleoperation # Web control only
 ./launch_rover.sh test         # Hardware validation
