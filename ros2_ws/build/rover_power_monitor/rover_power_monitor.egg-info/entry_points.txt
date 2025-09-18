@@ -1,3 +1,0 @@
-[console_scripts]
-rover_power_monitor_node = rover_power_monitor.rover_power_monitor_node:main
-
