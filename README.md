@@ -22,7 +22,7 @@ Repo for all of the Moonrockers team programming work
 ### 1. System Setup
 
 ```bash
-cd ~/mining_rover
+cd ~/moonrockers
 
 # Run system setup (requires sudo)
 sudo bash setup_system.sh
@@ -51,7 +51,7 @@ sudo reboot
 ### 3. Test Motors
 
 ```bash
-cd ~/mining_rover
+cd ~/moonrockers
 ./activate_env.sh
 python test_motors.py
 ```
@@ -66,7 +66,7 @@ This will run a test suite to verify:
 ## Project Structure
 
 ```
-mining_rover/
+moonrockers/
 ├── src/
 │   ├── hardware/                    # Direct hardware interfaces
 │   │   ├── can_motor_controller.py  # REV NEO motor control via CAN
