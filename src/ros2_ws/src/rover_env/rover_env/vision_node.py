@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Vision System
+Vision System for rover
 Handles ArUco marker detection and obstacle detection using RealSense D435i
 John Miller
 """
@@ -14,13 +14,14 @@ from dataclasses import dataclass
 import logging
 from enum import Enum
 
-# RealSense camera depens
-try:
-    import pyrealsense2 as rs
-    REALSENSE_AVAILABLE = True
-except ImportError:
-    REALSENSE_AVAILABLE = False
-    print("Warning: pyrealsense2 not available - using simulation mode")
+# RealSense camera support
+        try:
+            import pyrealsense2 as rs
+            REALSENSE_AVAILABLE = True
+        except ImportError:
+            REALSENSE_AVAILABLE = False
+            logger.error("pyrealsense2 not available - install with: pip install pyrealsense2")
+            logger.error("RealSense camera will not function without this library")
 
 logger = logging.getLogger(__name__)
 
@@ -61,10 +62,10 @@ class VisionSystem:
         """
         self.config = config['VISION_CONFIG']
         
-        # Camera params
+        # Camera parms
         self.camera_matrix = self.config.get('camera_matrix')
         self.distortion_coeffs = self.config.get('distortion_coeffs')
-        self.aruco_size = self.config['aruco_size']  # meters
+        self.aruco_size = self.config['aruco_size']  # Size in meters
         
         # ArUco detection setup
         aruco_dict_name = self.config['aruco_dict']
@@ -98,15 +99,16 @@ class VisionSystem:
     def initialize_camera(self):
         """Initialize RealSense camera"""
         if not REALSENSE_AVAILABLE:
-            logger.warning("RealSense not available - using simulation mode")
-            return self._initialize_webcam_fallback()
+            logger.error("RealSense library not available - cannot initialize camera")
+            logger.error("Install with: pip install pyrealsense2")
+            return False
         
         try:
-            # Configure RealSense pipeline
+            # Config RealSense pipeline
             self.pipeline = rs.pipeline()
             config = rs.config()
             
-            # Configure streams
+            # Config streams
             config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
             config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
             
@@ -114,96 +116,62 @@ class VisionSystem:
             profile = self.pipeline.start(config)
             
             # Get camera intrinsics
-            if self.camera_matrix is None:
-                color_stream = profile.get_stream(rs.stream.color)
-                intrinsics = color_stream.as_video_stream_profile().get_intrinsics()
-                
-                self.camera_matrix = np.array([
-                    [intrinsics.fx, 0, intrinsics.ppx],
-                    [0, intrinsics.fy, intrinsics.ppy],
-                    [0, 0, 1]
-                ])
-                
-                self.distortion_coeffs = np.array(intrinsics.coeffs)
-                
-                logger.info(f"Camera intrinsics loaded: fx={intrinsics.fx:.1f}, fy={intrinsics.fy:.1f}")
+            color_stream = profile.get_stream(rs.stream.color)
+            intrinsics = color_stream.as_video_stream_profile().get_intrinsics()
+            
+            self.camera_matrix = np.array([
+                [intrinsics.fx, 0, intrinsics.ppx],
+                [0, intrinsics.fy, intrinsics.ppy],
+                [0, 0, 1]
+            ])
+            
+            self.distortion_coeffs = np.array(intrinsics.coeffs)
+            
+            logger.info(f"RealSense camera initialized successfully")
+            logger.info(f"Resolution: 640x480 @ 30fps")
+            logger.info(f"Intrinsics: fx={intrinsics.fx:.1f}, fy={intrinsics.fy:.1f}")
             
             # Allow camera to stabilize
             for _ in range(30):
                 self.pipeline.wait_for_frames()
             
             self.camera_running = True
-            logger.info("RealSense camera initialized successfully")
             return True
             
         except Exception as e:
             logger.error(f"Failed to initialize RealSense camera: {e}")
-            return self._initialize_webcam_fallback()
-    
-    def _initialize_webcam_fallback(self):
-        """Fallback to regular webcam if RealSense not available"""
-        try:
-            self.cap = cv2.VideoCapture(0)
-            if not self.cap.isOpened():
-                raise Exception("Could not open webcam")
-            
-            # Set camera properties
-            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-            self.cap.set(cv2.CAP_PROP_FPS, 30)
-            
-            # Use default camera matrix if not provided
-            if self.camera_matrix is None:
-                # Rough estimate for typical webcam will need to be updated
-                self.camera_matrix = np.array([
-                    [600, 0, 320],
-                    [0, 600, 240],
-                    [0, 0, 1]
-                ])
-                self.distortion_coeffs = np.zeros(5)
-                logger.warning("Using estimated camera parameters - calibrate for better accuracy")
-            
-            self.camera_running = True
-            logger.info("Webcam initialized as fallback")
-            return True
-            
-        except Exception as e:
-            logger.error(f"Failed to initialize webcam: {e}")
+            logger.error("Ensure RealSense D435i is connected via USB 3.0")
+            logger.error("Check that no other application is using the camera")
             return False
+
     
     def capture_frame(self) -> bool:
-        """Capture a frame from the camera"""
-        if not self.camera_running:
+        """Capture a frame from the RealSense camera"""
+        if not self.camera_running or not self.pipeline:
+            logger.error("Camera not running or not initialized")
             return False
         
         try:
-            if REALSENSE_AVAILABLE and self.pipeline:
-                # RealSense capture
-                frames = self.pipeline.wait_for_frames(timeout_ms=1000)
-                
-                color_frame = frames.get_color_frame()
-                depth_frame = frames.get_depth_frame()
-                
-                if not color_frame:
-                    return False
-                
-                # Convert to numpy arrays
-                color_image = np.asanyarray(color_frame.get_data())
-                depth_image = np.asanyarray(depth_frame.get_data()) if depth_frame else None
-                
-                with self.frame_lock:
-                    self.current_frame = color_image.copy()
-                    self.current_depth = depth_image.copy() if depth_image is not None else None
-                
-            else:
-                # Webcam capture
-                ret, frame = self.cap.read()
-                if not ret:
-                    return False
-                
-                with self.frame_lock:
-                    self.current_frame = frame.copy()
-                    self.current_depth = None  # No depth from webcam
+            # RealSense capture with timeout
+            frames = self.pipeline.wait_for_frames(timeout_ms=1000)
+            
+            color_frame = frames.get_color_frame()
+            depth_frame = frames.get_depth_frame()
+            
+            if not color_frame:
+                logger.warning("No color frame received")
+                return False
+            
+            # Convert to numpy arrays
+            color_image = np.asanyarray(color_frame.get_data())
+            depth_image = np.asanyarray(depth_frame.get_data()) if depth_frame else None
+            
+            if depth_image is None:
+                logger.warning("No depth frame received")
+            
+            with self.frame_lock:
+                self.current_frame = color_image.copy()
+                self.current_depth = depth_image.copy() if depth_image is not None else None
             
             return True
             
@@ -225,7 +193,7 @@ class VisionSystem:
             return []
         
         try:
-            # Convert to grayscale for detection
+            # Convert to grayscale
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
             # Detect markers
@@ -236,7 +204,7 @@ class VisionSystem:
             markers = []
             
             if ids is not None and len(ids) > 0:
-                # Estimate poses if camera is calibrated
+                # Estimate poses
                 rvecs = None
                 tvecs = None
                 
@@ -303,7 +271,7 @@ class VisionSystem:
             List of detected obstacles
         """
         if depth_frame is None:
-            return []  # Cannot detect obstacles without depth
+            return []
         
         obstacles = []
         
@@ -316,7 +284,7 @@ class VisionSystem:
                         (depth_float < self.obstacle_max_distance)
             
             # Find obstacles by looking for depth discontinuities
-            # Use horizontal and vertical gradients
+            # Using horizontal and vertical gradients
             grad_x = cv2.Sobel(depth_float, cv2.CV_32F, 1, 0, ksize=3)
             grad_y = cv2.Sobel(depth_float, cv2.CV_32F, 0, 1, ksize=3)
             
@@ -331,7 +299,7 @@ class VisionSystem:
             contours, _ = cv2.findContours(obstacle_mask_uint8, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             
             frame_center_x = color_frame.shape[1] / 2
-            pixel_angle_per_pixel = 60.0 / color_frame.shape[1]  # Rough fov
+            pixel_angle_per_pixel = 60.0 / color_frame.shape[1]  # Rough fov might need to change
             
             for contour in contours:
                 # Filter small contours
@@ -471,7 +439,7 @@ class VisionSystem:
     def run_continuous_detection(self, mode: VisionMode = VisionMode.COMBINED, 
                                 fps: int = 10, display: bool = False):
         """
-        Run continuous detection in a separate thread to save some mems
+        Run continuous detection in a separate thread
         
         Args:
             mode: Detection mode
@@ -535,17 +503,13 @@ class VisionSystem:
         if self.pipeline:
             self.pipeline.stop()
         
-        if hasattr(self, 'cap') and self.cap:
-            self.cap.release()
-        
         cv2.destroyAllWindows()
 
 
-# Tests
+# Test
 if __name__ == "__main__":
     from config import VISION_CONFIG
     
-    # Test config  
     config = {'VISION_CONFIG': VISION_CONFIG}
     
     def marker_callback(markers):
@@ -559,7 +523,7 @@ if __name__ == "__main__":
             print(f"Closest obstacle: {closest.distance:.2f}m at {closest.angle:.1f}°")
     
     try:
-        # Initialize vision system
+        # Init
         vision = VisionSystem(config)
         
         if not vision.initialize_camera():
@@ -573,7 +537,6 @@ if __name__ == "__main__":
         print("Vision system test starting...")
         print("Press 'q' in the display window to quit")
         
-        # Run continuous detection
         detection_thread = vision.run_continuous_detection(
             mode=VisionMode.COMBINED,
             fps=10,
