@@ -1,0 +1,52 @@
+# Rover Dependencies
+
+# Core system
+numpy>=1.21.0
+scipy>=1.7.0
+pyyaml>=6.0
+
+# CAN
+python-can>=4.0.0
+can-utils
+
+# CV
+opencv-python>=4.5.0
+opencv-contrib-python>=4.5.0
+
+# ROS2
+ROS2 Humble
+
+# Camera support
+pyrealsense2>=2.50.0
+
+# Web interface
+fastapi>=0.100.0
+uvicorn>=0.20.0
+websockets>=11.0
+jinja2>=3.1.0
+
+# Hardware interfaces
+RPi.GPIO>=0.7.1  # For PWM control, might need might not but good to have
+Jetson.GPIO      # Jetson-specific GPIO library NEED NEED NEED IDOT
+
+# Math and tf transforms
+transforms3d>=0.4.0
+
+# Logging and utilities
+coloredlogs>=15.0
+click>=8.0.0
+
+# Development tools
+pytest>=7.0.0
+black>=22.0.0
+flake8>=5.0.0
+
+# Optional: For advanced path planning if I ever wanna try that (I won't)
+scikit-learn>=1.1.0
+matplotlib>=3.5.0
+
+# Optional, but SHOULD HAVE BECAUSE THEY ARE GOOD:
+# rclpy (install with ROS2)
+# geometry_msgs (install with ROS2)
+# sensor_msgs (install with ROS2)
+# nav_msgs (install with ROS2)
