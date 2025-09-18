@@ -1,0 +1,88 @@
+"""
+Hardware configuration
+Contains all hardware-specific constants and settings
+"""
+
+# Motor Configuration
+MOTOR_CONFIG = {
+    # CAN IDs for REV NEO motors
+    'front_left': 1,
+    'front_right': 2, 
+    'rear_left': 3,
+    'rear_right': 4,
+    
+    # Motor limits (Need to be replaced with measured vals. Ask Trinity for meas.)
+    'max_velocity': 1.0,  # meters/second
+    'max_acceleration': 2.0,  # meters/second^2
+    'wheel_diameter': 0.2,  # meters
+    'wheel_separation': 0.5,  # meters (left to right)
+    'wheelbase': 0.4,  # meters (front to back)
+    
+    # Control parameters
+    'velocity_kp': 0.1,
+    'velocity_ki': 0.01,
+    'velocity_kd': 0.001,
+}
+
+# Camera/Stepper Configuration (Should be ok but might need tweaks in practice)
+CAMERA_CONFIG = {
+    'stepper_steps_per_rev': 200,
+    'stepper_microsteps': 16,
+    'camera_rotation_speed': 30,  # degrees/second
+    'camera_max_angle': 180,  # degrees from center
+}
+
+# Actuator Configuration (Going to need more pins in future but ok for now)  
+ACTUATOR_CONFIG = {
+    'bucket_lift': {
+        'pwm_pin': 32,  # Jetson pin number
+        'min_pwm': 1000,  # microseconds
+        'max_pwm': 2000,  # microseconds
+        'neutral_pwm': 1500,  # microseconds
+    },
+    'bucket_tilt': {
+        'pwm_pin': 33,  # Jetson pin number
+        'min_pwm': 1000,
+        'max_pwm': 2000, 
+        'neutral_pwm': 1500,
+    }
+}
+
+# CAN Configuration
+CAN_CONFIG = {
+    'interface': 'can0',
+    'bitrate': 1000000,  # 1 Mbps
+    'timeout': 0.1,  # seconds
+}
+
+# Vision Configuration
+VISION_CONFIG = {
+    'aruco_dict': 'DICT_6X6_250',
+    'aruco_size': 0.1,  # meters
+    'camera_matrix': None,  # Will be calibrated
+    'distortion_coeffs': None,  # Will be calibrated
+}
+
+# Navigation Configuration
+NAV_CONFIG = {
+    'obstacle_detection_distance': 1.0,  # meters
+    'goal_tolerance': 0.1,  # meters
+    'planning_frequency': 10,  # Hz
+    'control_frequency': 20,  # Hz
+}
+
+# Digging Operation Configuration
+MINING_CONFIG = {
+    'deposit_cycles': 3,
+    'push_distance': 0.5,  # meters
+    'push_speed': 0.2,  # meters/second
+    'bucket_down_time': 2.0,  # seconds
+    'bucket_push_time': 3.0,  # seconds
+}
+
+# System Configuration
+SYSTEM_CONFIG = {
+    'teleoperation_port': 8000,
+    'log_level': 'INFO',
+    'update_rate': 50,  # Hz
+}
