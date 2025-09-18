@@ -1,18 +1,19 @@
 #!/bin/bash
-# System setup script for orin got tired of running everything every time it broke
-# Sets up CAN interface, installs dependencies, and configures orin depens
+# Rover System Setup Script, got tired of doing it on the orin
+# Sets up CAN interface, installs dependencies, and configures system
 
 set -e  # Exit on any error
 
 echo "🚀 System Setup"
 echo "=============================="
 
-# Output colors for fun
+# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' 
+NC='\033[0m' # No Color
 
+# Function to print colored output
 print_status() {
     echo -e "${GREEN}[INFO]${NC} $1"
 }
@@ -25,18 +26,18 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Check if running as root
+# Check if running as root for system changes
 check_sudo() {
     if [[ $EUID -ne 0 ]]; then
-        print_error "This script needs sudo privileges"
+        print_error "This script needs sudo privileges for system configuration"
         echo "Please run with: sudo $0"
         exit 1
     fi
 }
 
-# Install system depens
+# Install system dependencies
 install_system_deps() {
-    print_status "Installing system depens..."
+    print_status "Installing system dependencies..."
     
     apt-get update
     apt-get install -y \
@@ -61,7 +62,7 @@ install_system_deps() {
         gfortran \
         python3-dev
         
-    print_status "System depends installed ✓"
+    print_status "System dependencies installed ✓"
 }
 
 # Setup CAN interface
@@ -70,16 +71,16 @@ setup_can_interface() {
     
     # Check if CAN interface already exists
     if ip link show can0 &> /dev/null; then
-        print_status "CAN interface can0 already exists"
+        print_status "CAN interface can0 detected"
     else
-        print_warning "CAN interface can0 not found"
-        print_warning "Please ensure CAN hardware is connected and drivers are loaded"
+        print_error "CAN interface can0 not found"
+        print_error "Ensure CAN hardware is properly connected to Jetson Orin Nano"
+        print_error "Check hardware documentation for CAN pin connections"
     fi
     
     # Configure CAN interface
     print_status "Configuring CAN interface..."
     ip link set can0 down 2>/dev/null || true
-    # If you get the following two messages you broke the fucking orin. Resolder pins idot
     ip link set can0 type can bitrate 1000000 2>/dev/null || print_warning "Could not set CAN bitrate - check hardware"
     ip link set can0 up 2>/dev/null || print_warning "Could not bring up CAN interface - check hardware"
     
@@ -175,9 +176,9 @@ create_project_structure() {
     # Create activation script
     sudo -u $SUDO_USER cat > "$PROJECT_DIR/activate_env.sh" << EOF
 #!/bin/bash
-# Activation script for mining rover environment
+# Activation script for environment
 
-echo "🤖 Activating Mining Rover Environment"
+echo "Setup Rover Environment"
 source ~/moonrockers_env/bin/activate
 
 # Add src to Python path
@@ -186,7 +187,7 @@ export PYTHONPATH=\$PYTHONPATH:\$(pwd)/src
 # Set ROS domain ID (if using ROS2)
 export ROS_DOMAIN_ID=42
 
-echo "Environment activated! Ready to run rover code."
+echo "Environment activated!"
 echo "Use 'python test_motors.py' to test motor controllers"
 EOF
     
@@ -206,8 +207,7 @@ test_can_interface() {
         if command -v cansend &> /dev/null; then
             timeout 2s candump can0 &
             sleep 0.5
-            # Broke it again idot
-            cansend can0 123#DEADBEEF 2>/dev/null && print_status "CAN communication test passed " || print_warning "CAN communication test failed - check wiring"
+            cansend can0 123#DEADBEEF 2>/dev/null && print_status "CAN communication test passed ✓" || print_warning "CAN communication test failed - check wiring"
             pkill candump 2>/dev/null || true
         fi
     else
@@ -229,7 +229,7 @@ main() {
     test_can_interface
     
     echo ""
-    print_status "Setup complete!"
+    print_status "Setup complete"
     echo ""
     print_status "Next steps:"
     echo "  1. cd ~/moonrockers"
@@ -243,7 +243,7 @@ main() {
     echo "  □ Connect Firgelli actuators to PWM pins"
     echo "  □ Power up all systems"
     echo ""
-    print_warning "Reboot recommended"
+    print_warning "Reboot to ensure all drivers are loaded properly"
 }
 
 # Run main function
