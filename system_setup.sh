@@ -116,12 +116,12 @@ setup_python_env() {
     cd "$SUDO_USER_HOME"
     
     # Create virtual environment as the sudo user
-    sudo -u $SUDO_USER python3 -m venv mining_rover_env
+    sudo -u $SUDO_USER python3 -m venv moonrockers_env
     
     # Activate and install requirements
     print_status "Installing Python dependencies..."
     sudo -u $SUDO_USER bash -c "
-        source mining_rover_env/bin/activate
+        source moonrockers_env/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
     "
@@ -167,7 +167,7 @@ create_project_structure() {
     print_status "Creating project structure..."
     
     SUDO_USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
-    PROJECT_DIR="$SUDO_USER_HOME/mining_rover"
+    PROJECT_DIR="$SUDO_USER_HOME/moonrockers"
     
     # Create directories
     sudo -u $SUDO_USER mkdir -p "$PROJECT_DIR"/{src/{hardware,ros_nodes,teleoperation,autonomous,utils},launch,config,logs,tests}
@@ -178,7 +178,7 @@ create_project_structure() {
 # Activation script for mining rover environment
 
 echo "🤖 Activating Mining Rover Environment"
-source ~/mining_rover_env/bin/activate
+source ~/moonrockers_env/bin/activate
 
 # Add src to Python path
 export PYTHONPATH=\$PYTHONPATH:\$(pwd)/src
@@ -232,7 +232,7 @@ main() {
     print_status "Setup complete!"
     echo ""
     print_status "Next steps:"
-    echo "  1. cd ~/mining_rover"
+    echo "  1. cd ~/moonrockers"
     echo "  2. ./activate_env.sh"
     echo "  3. python test_motors.py"
     echo ""
