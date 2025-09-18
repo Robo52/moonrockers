@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-CAN Motor Controller for REV NEO Brushless Motors
+CAN Motor Controller for REV NEOs
 Handles low-level CAN communication and motor control
-John Miller john.miller@mines.sdsmt.edu
+John Miller
 """
 
 import can
@@ -29,8 +29,8 @@ class MotorStatus:
 
 class CANMotorController:
     """
-    Controls REV motors via CAN bus
-    Implements REV CAN protocol
+    Controls REV NEO brushless motors via CAN bus
+    Implements REV Robotics CAN protocol
     """
     
     # REV NEO CAN API IDs
@@ -59,7 +59,7 @@ class CANMotorController:
         self.running = False
         self.status_thread = None
         
-        # Initialize motor status tracking
+        # Init config
         for motor_name, can_id in config['MOTOR_CONFIG'].items():
             if isinstance(can_id, int):  # Skip non-motor config items
                 self.motor_status[can_id] = MotorStatus()
@@ -77,13 +77,18 @@ class CANMotorController:
             )
             logger.info(f"CAN bus initialized on {self.config['CAN_CONFIG']['interface']}")
             
-            # Start status monitoring thread
+            # Start status monitoring
             self.running = True
             self.status_thread = threading.Thread(target=self._status_monitor_loop, daemon=True)
             self.status_thread.start()
             
         except Exception as e:
             logger.error(f"Failed to initialize CAN bus: {e}")
+            logger.error("Troubleshooting:")
+            logger.error("1. Check CAN interface: sudo ip link show can0")
+            logger.error("2. Bring up interface: sudo ip link set can0 up type can bitrate 1000000")
+            logger.error("3. Verify hardware connections and termination resistors")
+            logger.error("4. Check that motors are powered and CAN IDs are correct")
             raise
     
     def _status_monitor_loop(self):
@@ -166,8 +171,8 @@ class CANMotorController:
             voltage: Target voltage
         """
         try:
-            # Clamp voltage to limits (DO NOT RAISE EVER FOR ANY REASON IDOT)
-            voltage = max(-12.0, min(12.0, voltage))
+            # Clamp voltage to safe limits
+            voltage = max(-12.0, min(12.0, voltage)) # DON"T EVER RAISE
             
             # Prepare CAN message
             can_id = self.API_IDS['SET_VOLTAGE'] | motor_id
